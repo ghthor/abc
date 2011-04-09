@@ -15,13 +15,16 @@ div.menu div:first-child, div.dropzone div:first-child {
 }
 
 #type_c {
-	background-color: #5E0DAC;
+	background-color: #B53AD4;
 }
 
-.elementBox {
+.nodeText {
 	/*color: #A069D6;*/
 	color: white;
-	text-align: center;
+}
+
+.unsetNode {
+	opacity: 0.5;
 }
 
 td, th {

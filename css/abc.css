@@ -24,25 +24,48 @@ div.menu {
 	margin-right: 10px;
 }
 
-div.menu div:first-child {
-	display: block;
-}
-
 ul.elementList {
 	list-style: none outside none;
+	margin: 0px;
 	padding: 10px;
 }
 
-.elementBox {
+ul.elementList li {
 	margin-top: 10px;
-	padding: 30px;
-	cursor: pointer;
+	min-width: 80px;
+	min-height: 80px;
 }
 
-.elementBox:first-child {
+ul.elementList li:first-child {
 	margin-top: 0px;
 }
 
+.nodeText {
+	display:table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.elementBox {
+	width: 80px;
+	height: 80px;
+	cursor: pointer;
+}
+
+.unsetNode {
+	padding: 0px;
+	width: 76px;
+
+	/* This doesn't change due to display:table-cell
+	 * The border is absorbed into the height vertically, but not horizontally
+	 */
+	height: 80px;
+	border-width: 2px;
+	border-style: dashed;
+	border-color: black;
+	border-collapse: seperate;
+	cursor: pointer;
+}
 
 div.dropzone {
 	display: inline-block;
