@@ -4,6 +4,10 @@ html, body {
 	margin: 0px;
 }
 
+body {
+	padding: 20px;
+}
+
 *.centered {
   display: table;
   margin: auto;
@@ -17,46 +21,33 @@ html, body {
 
 div.menu {
 	float: left;
-	margin: 0px;
-	padding: 0px;
-	width: 20%;
-	height: 100%;
+	margin-right: 10px;
 }
 
 div.menu div:first-child {
 	display: block;
-	margin: 10px 5px 10px 10px;
-	min-height: 20%;
 }
 
-div.dropzone {
-	float: right;
-	margin: 0px;
-	padding: 0px;
-	height: 100%;
-	width: 80%;
-}
-
-div.dropzone div:first-child {
-	display: block;
-	margin: 10px 10px 10px 5px;
-	min-height: 20%;
-}
-
-ul.menuList {
+ul.elementList {
 	list-style: none outside none;
-	padding: 0px;
+	padding: 10px;
 }
 
 .elementBox {
-	margin-top: 0px;
-	margin-bottom: 10px;
-	padding: 10px 10px 10px 10px;
+	margin-top: 10px;
+	padding: 30px;
 	cursor: pointer;
 }
 
 .elementBox:first-child {
-	margin-top: 10px;
+	margin-top: 0px;
+}
+
+
+div.dropzone {
+	display: inline-block;
+	margin: 0px;
+	padding: 0px;
 }
 
 table { margin: 1em; border-collapse: collapse; }
