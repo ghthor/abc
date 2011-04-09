@@ -1,0 +1,63 @@
+html, body {
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+*.centered {
+  display: table;
+  margin: auto;
+}
+
+*.roundedBox {
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webit-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
+}
+
+div.menu {
+	float: left;
+	margin: 0px;
+	padding: 0px;
+	width: 20%;
+	height: 100%;
+}
+
+div.menu div:first-child {
+	display: block;
+	margin: 10px 5px 10px 10px;
+	min-height: 20%;
+}
+
+div.dropzone {
+	float: right;
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+	width: 80%;
+}
+
+div.dropzone div:first-child {
+	display: block;
+	margin: 10px 10px 10px 5px;
+	min-height: 20%;
+}
+
+ul.menuList {
+	list-style: none outside none;
+	padding: 0px;
+}
+
+.elementBox {
+	margin-top: 0px;
+	margin-bottom: 10px;
+	padding: 10px 10px 10px 10px;
+	cursor: pointer;
+}
+
+.elementBox:first-child {
+	margin-top: 10px;
+}
+
+table { margin: 1em; border-collapse: collapse; }
+td, th { padding: .3em; border: 1px #9CCEEF solid; }

@@ -1,0 +1,29 @@
+body {
+	background-color: #5E0DAC;
+}
+
+div.menu div:first-child, div.dropzone div:first-child {
+	background-color: #E165B9;
+}
+
+#type_a {
+	background-color: #8805A8;
+}
+
+#type_b {
+	background-color: #C30083;
+}
+
+#type_c {
+	background-color: #5E0DAC;
+}
+
+.elementBox {
+	/*color: #A069D6;*/
+	color: white;
+	text-align: center;
+}
+
+td, th {
+	border: 1px #9CCEEF solid;
+}
