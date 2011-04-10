@@ -2,40 +2,55 @@ $(window).load(function() {
     $('.elementBox.type_a').bind('dragstart', function(e) {
         var dt = e.originalEvent.dataTransfer;
         dt.setData("nodeType", 'a');
+        nodeDragged = new NodeA();
+        return true;
+    }).bind('dragend', function(e) {
+        nodeDragged = null;
         return true;
     });
+
 
     $('.elementBox.type_b').bind('dragstart', function(e) {
         var dt = e.originalEvent.dataTransfer;
         dt.setData("nodeType", 'b');
+        nodeDragged = null;
         return true;
     });
 
-    $('#dropzone ul.elementList li div').bind('dragenter', function(e) {
-        e.stopPropagation();
-        var dt = e.originalEvent.dataTransfer;
-        var nodeType = dt.getData("nodeType");
-        if (nodeType === 'a') {
-            var n = $(this);
-            n.removeClass("unsetNode");
-            n.addClass("elementBox");
-            n.addClass("type_a");
-        }
-        return false;
-    });
-
-    $('#dropzone ul.elementList li div').bind('dragleave', function(e) {
-        e.stopPropagation();
-        var dt = e.originalEvent.dataTransfer;
-        var nodeType = dt.getData("nodeType");
-        if (nodeType === 'a') {
-            var n = $(this);
-            n.addClass("unsetNode");
-            n.removeClass("elementBox");
-            n.removeClass("type_a");
-        }
-        return false;
-    });
+    var setupHandlers = function() {
+        $('#dropzone ul.elementList li div.unsetNode').bind('dragenter', function(e) {
+            if (nodeBase.isValidChild(nodeDragged)) {
+                var n = $(this);
+                n.removeClass("unsetNode");
+                n.addClass("elementBox");
+                n.addClass("type_a");
+            }
+            return true;
+        }).bind('dragleave', function(e) {
+            var dt = e.originalEvent.dataTransfer;
+            var nodeType = dt.getData("nodeType");
+            if (nodeType === 'a') {
+                var n = $(this);
+                n.addClass("unsetNode");
+                n.removeClass("elementBox");
+                n.removeClass("type_a");
+            }
+            return true;
+        }).bind('dragover', function(e) {
+            return false;
+        }).bind('drop', function(e) {
+            e.stopPropagation();
+            if (nodeBase.isValidChild(nodeDragged)) {
+                nodeBase.addChild(nodeDragged);
+                $(this).parent()
+            .append("<li><div class='unsetNode nodeText roundedBox'>A</div></li");
+                $(this).unbind('dragenter dragleave dragover drop');
+                setupHandlers();
+            }
+            return false;
+        });
+    };
+    setupHandlers();
 
     var NodeBase = function() {
         this.children = [];
@@ -43,8 +58,13 @@ $(window).load(function() {
         return this;
     }
 
+    var nodeBase = new NodeBase();
+    $.nodeBase = nodeBase;
+    var nodeDragged = null;
+
     NodeBase.prototype.isValidChild = function(child) {
         // nodeType === 'a' only Valid Child type
+        if (child === null) { return false; }
         if (child.nodeType === undefined) { return false; }
         if (child.nodeType != 'a') { return false; }
         return true;
