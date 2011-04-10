@@ -2,19 +2,19 @@ body {
 	background-color: #5E0DAC;
 }
 
-div.menu div:first-child, div.dropzone div:first-child {
+div.nodeCol {
 	background-color: #E165B9;
 }
 
-#type_a {
+.type_a {
 	background-color: #8805A8;
 }
 
-#type_b {
+.type_b {
 	background-color: #C30083;
 }
 
-#type_c {
+.type_c {
 	background-color: #B53AD4;
 }
 

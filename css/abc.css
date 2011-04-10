@@ -67,7 +67,7 @@ ul.elementList li:first-child {
 	cursor: pointer;
 }
 
-div.dropzone {
+div.nodeCol {
 	display: inline-block;
 	margin: 0px;
 	padding: 0px;
