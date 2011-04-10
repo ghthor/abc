@@ -1,7 +1,7 @@
 $(window).load(function() {
     $('.elementBox.type_a').bind('dragstart', function(e) {
         var dt = e.originalEvent.dataTransfer;
-        dt.setData("Text", 'a');
+        dt.setData("Text", 'type_a');
         nodeDragged = new NodeA();
         return true;
     }).bind('dragend', function(e) {
@@ -11,7 +11,7 @@ $(window).load(function() {
 
     $('.elementBox.type_b').bind('dragstart', function(e) {
         var dt = e.originalEvent.dataTransfer;
-        dt.setData("Text", 'b');
+        dt.setData("Text", 'type_b');
         nodeDragged = new NodeB();
         return true;
     }).bind('dragend', function(e) {
@@ -21,7 +21,7 @@ $(window).load(function() {
 
     $('.elementBox.type_c').bind('dragstart', function(e) {
         var dt = e.originalEvent.dataTransfer;
-        dt.setData("Text", 'c');
+        dt.setData("Text", 'type_c');
         nodeDragged = new NodeC();
         return true;
     }).bind('dragend', function(e) {
@@ -82,7 +82,7 @@ $(window).load(function() {
             n.addClass("type_a");
             var tag = ['<div class="nodeCol roundedBox dropzone">',
                 '<ul class="elementList">',
-                "<li><div class='unsetNode nodeText roundedBox nodeBase'>A</div></li>",
+                "<li><div class='unsetNode nodeText roundedBox nodeBase noHandlers'>A</div></li>",
                 '</ul></div>'];
 
             $("body") .append(tag.join(''));
@@ -97,10 +97,10 @@ $(window).load(function() {
     };
 
     NodeBase.prototype.isValidChild = function(child) {
-        // nodeType === 'a' only Valid Child type
+        // nodeType === 'type_a' only Valid Child type
         if (child === null) { return false; }
         if (child.nodeType === undefined) { return false; }
-        if (child.nodeType != 'a') { return false; }
+        if (child.nodeType != 'type_a') { return false; }
         return true;
     };
 
@@ -128,7 +128,7 @@ $(window).load(function() {
 
     function NodeA() {
         this.children = [null,null];
-        this.nodeType = 'a';
+        this.nodeType = 'type_a';
         return this;
     }
     NodeA.prototype = NodeBase;
@@ -161,7 +161,7 @@ $(window).load(function() {
 
     function NodeB() {
         this.children = [];
-        this.nodeType = 'b';
+        this.nodeType = 'type_b';
         return this;
     };
 
@@ -170,9 +170,9 @@ $(window).load(function() {
         if (child === undefined) { return false; }
         if (child.nodeType === undefined) { return false; }
         switch(child.nodeType) {
-            case 'a':
-            case 'b':
-            case 'c':
+            case 'type_a':
+            case 'type_b':
+            case 'type_c':
                 return true;
             default:
                 return false;
@@ -205,7 +205,7 @@ $(window).load(function() {
     };
 
     function NodeC() {
-        this.nodeType = 'c';
+        this.nodeType = 'type_c';
         return this;
     }
 
@@ -218,11 +218,12 @@ $(window).load(function() {
     };
 
     var setupHandlers = function() {
-        $('div.dropzone ul.elementList li div.unsetNode.nodeBase')
+        $('div.dropzone ul.elementList li div.unsetNode.nodeBase.noHandlers')
             .bind('dragenter', NodeBase.dragenter)
             .bind('dragleave', NodeBase.dragleave)
             .bind('dragover', NodeBase.dragover)
-            .bind('drop', NodeBase.drop);
+            .bind('drop', NodeBase.drop)
+            .removeClass('noHandlers');
     };
     setupHandlers();
 });
