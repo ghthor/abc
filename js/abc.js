@@ -1,7 +1,7 @@
 $(window).load(function() {
     $('.elementBox.type_a').bind('dragstart', function(e) {
         var dt = e.originalEvent.dataTransfer;
-        dt.setData("nodeType", 'a');
+        dt.setData("Text", 'a');
         nodeDragged = new NodeA();
         return true;
     }).bind('dragend', function(e) {
@@ -9,58 +9,92 @@ $(window).load(function() {
         return true;
     });
 
-
     $('.elementBox.type_b').bind('dragstart', function(e) {
         var dt = e.originalEvent.dataTransfer;
-        dt.setData("nodeType", 'b');
+        dt.setData("Text", 'b');
+        nodeDragged = new NodeB();
+        return true;
+    }).bind('dragend', function(e) {
         nodeDragged = null;
         return true;
     });
 
-    var setupHandlers = function() {
-        $('#dropzone ul.elementList li div.unsetNode').bind('dragenter', function(e) {
-            if (nodeBase.isValidChild(nodeDragged)) {
-                var n = $(this);
-                n.removeClass("unsetNode");
-                n.addClass("elementBox");
-                n.addClass("type_a");
-            }
-            return true;
-        }).bind('dragleave', function(e) {
-            var dt = e.originalEvent.dataTransfer;
-            var nodeType = dt.getData("nodeType");
-            if (nodeType === 'a') {
-                var n = $(this);
-                n.addClass("unsetNode");
-                n.removeClass("elementBox");
-                n.removeClass("type_a");
-            }
-            return true;
-        }).bind('dragover', function(e) {
-            return false;
-        }).bind('drop', function(e) {
-            e.stopPropagation();
-            if (nodeBase.isValidChild(nodeDragged)) {
-                nodeBase.addChild(nodeDragged);
-                $(this).parent()
-            .append("<li><div class='unsetNode nodeText roundedBox'>A</div></li");
-                $(this).unbind('dragenter dragleave dragover drop');
-                setupHandlers();
-            }
-            return false;
-        });
-    };
-    setupHandlers();
+    $('.elementBox.type_c').bind('dragstart', function(e) {
+        var dt = e.originalEvent.dataTransfer;
+        dt.setData("Text", 'c');
+        nodeDragged = new NodeC();
+        return true;
+    }).bind('dragend', function(e) {
+        nodeDragged = null;
+        return true;
+    });
 
     var NodeBase = function() {
         this.children = [];
         this.changeStack = [];
+        this.view = null;
         return this;
     }
 
     var nodeBase = new NodeBase();
+    nodeBase.view = $('div.dropzone ul');
     $.nodeBase = nodeBase;
     var nodeDragged = null;
+
+    NodeBase.dragenter = function(e) {
+        if (nodeBase.isValidChild(nodeDragged)) {
+            var n = $(this);
+            n.removeClass("unsetNode");
+            n.addClass("setNode");
+            n.addClass("type_a");
+        }
+        return false;
+    };
+
+    NodeBase.dragleave = function(e) {
+        var n = $(this);
+        n.removeClass("setNode");
+        n.addClass("unsetNode");
+        n.removeClass("type_a type_b type_c");
+        n.text("A");
+        return false;
+    };
+
+    NodeBase.dragover = function(e) {
+        if (nodeBase.isValidChild(nodeDragged)) {
+            var n = $(this);
+            n.removeClass("unsetNode");
+            n.addClass("setNode");
+            n.addClass("type_a");
+        }
+        return false;
+    };
+
+    NodeBase.drop = function(e) {
+        e.stopPropagation();
+        if (nodeBase.isValidChild(nodeDragged)) {
+            nodeBase.addChild(nodeDragged);
+
+            // Ensure the View looks correct
+            var n = $(this);
+            n.removeClass("unsetNode nodeBase");
+            n.addClass("setNode");
+            n.addClass("type_a");
+            var tag = ['<div class="nodeCol roundedBox dropzone">',
+                '<ul class="elementList">',
+                "<li><div class='unsetNode nodeText roundedBox nodeBase'>A</div></li>",
+                '</ul></div>'];
+
+            $("body") .append(tag.join(''));
+            n.unbind('dragenter dragleave dragover drop');
+
+            var NodeA_Child = "<li><div class='unsetNode nodeText roundedBox'>A,B,C</div></li>";
+            n.append(NodeA_Child);
+            n.append(NodeA_Child);
+            setupHandlers();
+        }
+        return false;
+    };
 
     NodeBase.prototype.isValidChild = function(child) {
         // nodeType === 'a' only Valid Child type
@@ -125,6 +159,70 @@ $(window).load(function() {
         return false;
     };
 
+    function NodeB() {
+        this.children = [];
+        this.nodeType = 'b';
+        return this;
+    };
 
+    NodeB.prototype = NodeBase;
+    NodeB.prototype.isValidChild = function(child) {
+        if (child === undefined) { return false; }
+        if (child.nodeType === undefined) { return false; }
+        switch(child.nodeType) {
+            case 'a':
+            case 'b':
+            case 'c':
+                return true;
+            default:
+                return false;
+        }
+        return false;
+    };
+    NodeB.prototype.addChild = function(child, index, force) {
+        if(!this.isValidChild(child)) { return false; }
 
+        if(index === undefined) {
+            var children = this.children;
+            child.parentNode = this;
+            children.push(child);
+            this.changeStack.push(function() { children.pop().parentNode = null; });
+            return true;
+        } else if (!isNaN(index)) {
+           if (this.children[index]) {
+              if (force) {
+                 // Force add child, dropping children[index]
+              } else {
+                  return false;
+              }
+           } else {
+               child.parentNode = this;
+               this.children[index] = child;
+               return true;
+           }
+        }
+        return false;
+    };
+
+    function NodeC() {
+        this.nodeType = 'c';
+        return this;
+    }
+
+    NodeC.prototype = NodeBase;
+    NodeC.prototype.isValidChild = function(child) {
+        return false;
+    };
+    NodeC.prototype.addChild = function(child) {
+        return false;
+    };
+
+    var setupHandlers = function() {
+        $('div.dropzone ul.elementList li div.unsetNode.nodeBase')
+            .bind('dragenter', NodeBase.dragenter)
+            .bind('dragleave', NodeBase.dragleave)
+            .bind('dragover', NodeBase.dragover)
+            .bind('drop', NodeBase.drop);
+    };
+    setupHandlers();
 });

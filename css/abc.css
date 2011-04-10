@@ -27,13 +27,16 @@ div.menu {
 ul.elementList {
 	list-style: none outside none;
 	margin: 0px;
-	padding: 10px;
+	padding: 5px;
 }
 
 ul.elementList li {
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webit-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
+
 	margin-top: 10px;
-	min-width: 80px;
-	min-height: 80px;
+	padding: 0px;
 }
 
 ul.elementList li:first-child {
@@ -41,25 +44,26 @@ ul.elementList li:first-child {
 }
 
 .nodeText {
-	display:table-cell;
+	/*display:table-cell;*/
 	vertical-align: middle;
 	text-align: center;
 }
 
 .elementBox {
-	width: 80px;
-	height: 80px;
+	min-width: 40px;
+	min-height: 40px;
+	padding: 5px;
 	cursor: pointer;
 }
 
 .unsetNode {
-	padding: 0px;
-	width: 76px;
+	padding: 5px;
+	min-width: 36px;
 
 	/* This doesn't change due to display:table-cell
 	 * The border is absorbed into the height vertically, but not horizontally
 	 */
-	height: 80px;
+	min-height: 36px;
 	border-width: 2px;
 	border-style: dashed;
 	border-color: black;
@@ -67,8 +71,23 @@ ul.elementList li:first-child {
 	cursor: pointer;
 }
 
+.setNode {
+	padding: 5px;
+	min-width: 36px;
+
+	/* This doesn't change due to display:table-cell
+	 * The border is absorbed into the height vertically, but not horizontally
+	 */
+	min-height: 36px;
+	border-width: 2px;
+	border-style: solid;
+	border-color: black;
+	border-collapse: seperate;
+}
+
 div.nodeCol {
 	display: inline-block;
+	float: left;
 	margin: 0px;
 	padding: 0px;
 }

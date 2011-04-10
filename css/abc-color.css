@@ -6,6 +6,10 @@ div.nodeCol {
 	background-color: #E165B9;
 }
 
+.selected {
+	background-color: #8D41D6;
+}
+
 .type_a {
 	background-color: #8805A8;
 }
