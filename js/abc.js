@@ -148,6 +148,7 @@ $(window).load(function() {
             n.addClass("setNode");
 
             var type = e.originalEvent.dataTransfer.getData("Text");
+            type = type ? type : nodeDragged.nodeType;
             n.addClass(type);
 
             n.text(typeToText(type));
@@ -171,6 +172,7 @@ $(window).load(function() {
             n.addClass("setNode");
 
             var type = e.originalEvent.dataTransfer.getData("Text");
+            type = type ? type : nodeDragged.nodeType;
             n.addClass(type);
 
             n.text(typeToText(type));
@@ -190,6 +192,7 @@ $(window).load(function() {
             n.addClass("setNode");
 
             var type = e.originalEvent.dataTransfer.getData("Text");
+            type = type ? type : nodeDragged.nodeType;
             n.addClass(type);
             n.text(typeToText(type));
 
@@ -250,6 +253,7 @@ $(window).load(function() {
             n.addClass("setNode");
 
             var type = e.originalEvent.dataTransfer.getData("Text");
+            type = type ? type : nodeDragged.nodeType;
             n.addClass(type);
 
             n.text(typeToText(type));
@@ -273,6 +277,7 @@ $(window).load(function() {
             n.addClass("setNode");
 
             var type = e.originalEvent.dataTransfer.getData("Text");
+            type = type ? type : nodeDragged.nodeType;
             n.addClass(type);
 
             n.text(typeToText(type));
@@ -292,6 +297,7 @@ $(window).load(function() {
             n.addClass("setNode");
 
             var type = e.originalEvent.dataTransfer.getData("Text");
+            type = type ? type : nodeDragged.nodeType;
             n.addClass(type);
             n.text(typeToText(type));
 
