@@ -88,9 +88,7 @@ $(window).load(function() {
             $("body") .append(tag.join(''));
             n.unbind('dragenter dragleave dragover drop');
 
-            var NodeA_Child = "<li><div class='unsetNode nodeText roundedBox'>A,B,C</div></li>";
-            n.append(NodeA_Child);
-            n.append(NodeA_Child);
+            nodeDragged.appendChildHtml(n);
             setupHandlers();
         }
         return false;
@@ -131,11 +129,91 @@ $(window).load(function() {
         this.nodeType = 'type_a';
         return this;
     }
-    NodeA.prototype = NodeBase;
-    NodeA.prototype.isValidChild = function(child) {
+
+    function typeToText(type) {
+        switch(type) {
+            case "type_a":
+                return 'A';
+            case "type_b":
+                return 'B';
+            case "type_c":
+                return 'C';
+        }
+    }
+
+    NodeA.dragenter = function(e) {
+        if (NodeA.isValidChild(nodeDragged)) {
+            var n = $(this);
+            n.removeClass("unsetNode");
+            n.addClass("setNode");
+
+            var type = e.originalEvent.dataTransfer.getData("Text");
+            n.addClass(type);
+
+            n.text(typeToText(type));
+        }
+        return false;
+    };
+
+    NodeA.dragleave = function(e) {
+        var n = $(this);
+        n.removeClass("setNode");
+        n.addClass("unsetNode");
+        n.removeClass("type_a type_b type_c");
+        n.text("A,B,C");
+        return false;
+    };
+
+    NodeA.dragover = function(e) {
+        if (NodeA.isValidChild(nodeDragged)) {
+            var n = $(this);
+            n.removeClass("unsetNode");
+            n.addClass("setNode");
+
+            var type = e.originalEvent.dataTransfer.getData("Text");
+            n.addClass(type);
+
+            n.text(typeToText(type));
+        }
+        return false;
+    };
+
+    NodeA.drop = function(e) {
+        e.stopPropagation();
+        if (NodeA.isValidChild(nodeDragged)) {
+            //TODO: Fuck how do I handle this???
+            //nodeBase.addChild(nodeDragged);
+
+            // Ensure the View looks correct
+            var n = $(this);
+            n.removeClass("unsetNode");
+            n.addClass("setNode");
+
+            var type = e.originalEvent.dataTransfer.getData("Text");
+            n.addClass(type);
+            n.text(typeToText(type));
+
+            n.unbind('dragenter dragleave dragover drop');
+
+            nodeDragged.appendChildHtml(n);
+            setupHandlers();
+        }
+        return false;
+    };
+
+    NodeA.prototype = new NodeBase();
+    NodeA.prototype.appendChildHtml = function(ele) {
+        var html = '<li><div class="unsetNode nodeText roundedBox noHandlers">A,B,C</div></li>';
+        ele.append(html);
+        ele.append(html);
+    };
+
+    NodeA.isValidChild = function(child) {
         if (child.nodeType === undefined) { return false; }
         return true;
     }
+    NodeA.prototype.isValidChild = NodeA.isValidChild;
+
     NodeA.prototype.addChild = function(child, index, force) {
         if(!this.isValidChild(child)) { return false; }
 
@@ -164,21 +242,90 @@ $(window).load(function() {
         this.nodeType = 'type_b';
         return this;
     };
+    
+    NodeB.dragenter = function(e) {
+        if (NodeB.isValidChild(nodeDragged)) {
+            var n = $(this);
+            n.removeClass("unsetNode");
+            n.addClass("setNode");
 
-    NodeB.prototype = NodeBase;
-    NodeB.prototype.isValidChild = function(child) {
-        if (child === undefined) { return false; }
-        if (child.nodeType === undefined) { return false; }
-        switch(child.nodeType) {
-            case 'type_a':
-            case 'type_b':
-            case 'type_c':
-                return true;
-            default:
-                return false;
+            var type = e.originalEvent.dataTransfer.getData("Text");
+            n.addClass(type);
+
+            n.text(typeToText(type));
         }
         return false;
     };
+
+    NodeB.dragleave = function(e) {
+        var n = $(this);
+        n.removeClass("setNode");
+        n.addClass("unsetNode");
+        n.removeClass("type_a type_b type_c");
+        n.text("B,C");
+        return false;
+    };
+
+    NodeB.dragover = function(e) {
+        if (NodeB.isValidChild(nodeDragged)) {
+            var n = $(this);
+            n.removeClass("unsetNode");
+            n.addClass("setNode");
+
+            var type = e.originalEvent.dataTransfer.getData("Text");
+            n.addClass(type);
+
+            n.text(typeToText(type));
+        }
+        return false;
+    };
+
+    NodeB.drop = function(e) {
+        e.stopPropagation();
+        if (NodeB.isValidChild(nodeDragged)) {
+            //TODO: Fuck how do I handle this???
+            //nodeBase.addChild(nodeDragged);
+
+            // Ensure the View looks correct
+            var n = $(this);
+            n.removeClass("unsetNode");
+            n.addClass("setNode");
+
+            var type = e.originalEvent.dataTransfer.getData("Text");
+            n.addClass(type);
+            n.text(typeToText(type));
+
+            n.unbind('dragenter dragleave dragover drop');
+
+            nodeDragged.appendChildHtml(n);
+            n.parent().parent().append(NodeB.childHtml);
+            setupHandlers();
+        }
+        return false;
+    };
+
+    NodeB.prototype = new NodeBase();
+    NodeB.childHtml = '<li><div class="unsetNode nodeText roundedBox noHandlers">B,C</div></li>';
+    NodeB.prototype.appendChildHtml = function(ele) {
+        ele.append(NodeB.childHtml);
+    };
+    NodeB.isValidChild = function(child) {
+        if (child === undefined) { return false; }
+        if (child.nodeType === undefined) { return false; }
+        switch(child.nodeType) {
+            case 'type_b':
+            case 'type_c':
+                return true;
+                break;
+            case 'type_a':
+            default:
+                return false;
+                break;
+        }
+        return false;
+    };
+    NodeB.prototype.isValidChild = NodeB.isValidChild;
+
     NodeB.prototype.addChild = function(child, index, force) {
         if(!this.isValidChild(child)) { return false; }
 
@@ -209,20 +356,36 @@ $(window).load(function() {
         return this;
     }
 
-    NodeC.prototype = NodeBase;
-    NodeC.prototype.isValidChild = function(child) {
+    NodeC.prototype = new NodeBase();
+    NodeC.prototype.appendChildHtml = function(ele) {
+    };
+    NodeC.isValidChild = function(child) {
         return false;
     };
+    NodeC.prototype.isValidChild = NodeC.isValidChild;
+
     NodeC.prototype.addChild = function(child) {
         return false;
     };
 
     var setupHandlers = function() {
-        $('div.dropzone ul.elementList li div.unsetNode.nodeBase.noHandlers')
-            .bind('dragenter', NodeBase.dragenter)
-            .bind('dragleave', NodeBase.dragleave)
-            .bind('dragover', NodeBase.dragover)
-            .bind('drop', NodeBase.drop)
+        $('div.dropzone > ul.elementList > li > div.unsetNode.nodeBase.noHandlers')
+            .bind('dragenter',  NodeBase.dragenter)
+            .bind('dragleave',  NodeBase.dragleave)
+            .bind('dragover',   NodeBase.dragover)
+            .bind('drop',       NodeBase.drop)
+            .removeClass('noHandlers');
+        $('div.dropzone ul.elementList div.type_a > li > div.unsetNode.noHandlers')
+            .bind('dragenter',  NodeA.dragenter)
+            .bind('dragleave',  NodeA.dragleave)
+            .bind('dragover',   NodeA.dragover)
+            .bind('drop',       NodeA.drop)
+            .removeClass('noHandlers');
+        $('div.dropzone ul.elementList div.type_b > li > div.unsetNode.noHandlers')
+            .bind('dragenter',  NodeB.dragenter)
+            .bind('dragleave',  NodeB.dragleave)
+            .bind('dragover',   NodeB.dragover)
+            .bind('drop',       NodeB.drop)
             .removeClass('noHandlers');
     };
     setupHandlers();
