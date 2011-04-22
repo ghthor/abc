@@ -119,9 +119,13 @@ $(window).load(function() {
     };
 
     NodeBase.JSON = function(node) {
-        this.dropped = [];
-        for(var i = 0; i < node.children.length; i++) {
-            this.dropped[i] = node.children[i].toJSON();
+        if (node.children.length == 0) {
+            this.dropped = null;
+        } else {
+            this.dropped = [];
+            for(var i = 0; i < node.children.length; i++) {
+                this.dropped[i] = node.children[i].toJSON();
+            }
         }
         return this;
     };
