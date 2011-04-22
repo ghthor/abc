@@ -24,22 +24,16 @@ div.menu {
 	margin-right: 10px;
 }
 
-ul.elementList {
-	list-style: none outside none;
+div.elementList {
 	margin: 0px;
 	padding: 5px;
 }
 
-ul.elementList li {
-	-moz-border-radius: 10px 10px 10px 10px;
-	-webit-border-radius: 10px 10px 10px 10px;
-	border-radius: 10px 10px 10px 10px;
-
+div.elementList div.node {
 	margin-top: 10px;
-	padding: 0px;
 }
 
-ul.elementList li:first-child {
+div.elementList div.node:first-child {
 	margin-top: 0px;
 }
 
@@ -50,9 +44,9 @@ ul.elementList li:first-child {
 }
 
 .elementBox {
+	padding: 5px;
 	min-width: 40px;
 	min-height: 40px;
-	padding: 5px;
 	cursor: pointer;
 }
 
@@ -88,8 +82,6 @@ ul.elementList li:first-child {
 div.nodeCol {
 	display: inline-block;
 	float: left;
-	margin: 0px;
-	padding: 0px;
 }
 
 table { margin: 1em; border-collapse: collapse; }

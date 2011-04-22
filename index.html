@@ -12,18 +12,15 @@
 </head>
 <body>
 	<div class="menu">
-		<div class="nodeCol roundedBox" id="menu">
-			<ul class="elementList" >
-				<li><div draggable="true" class="nodeText elementBox roundedBox type_a">A</div></li>
-				<li><div draggable="true" class="nodeText elementBox roundedBox type_b">B</div></li>
-				<li><div draggable="true" class="nodeText elementBox roundedBox type_c">C</div></li>
-			</ul>
+		<div class="nodeCol roundedBox elementList" id="menu">
+			<div draggable="true" class="node type_a nodeText elementBox roundedBox">A</div>
+			<div draggable="true" class="node type_b nodeText elementBox roundedBox">B</div>
+			<div draggable="true" class="node type_c nodeText elementBox roundedBox">C</div>
+			<div class="nodeText roundedBox"><button style="margin-top:10px;">JSON</button></div>
 		</div>
 	</div>
-	<div class="nodeCol roundedBox dropzone">
-		<ul class="elementList" >
-			<li><div class="noHandlers nodeText unsetNode roundedBox nodeBase">A</div></li>
-		</ul>
+	<div class="elementList nodeCol roundedBox dropzone">
+		<div class="node nodeBase noHandlers nodeText unsetNode roundedBox">A</div>
 	</div>
 </body>
 </html>
