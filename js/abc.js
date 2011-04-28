@@ -1,4 +1,6 @@
 $(window).load(function() {
+
+    // Bindings for dragstart to the menu on the left
     $('.elementBox.type_a').bind('dragstart', function(e) {
         var dt = e.originalEvent.dataTransfer;
         dt.setData('Text', 'type_a');
@@ -45,7 +47,9 @@ $(window).load(function() {
         }
     }
 
-
+    // NodeBase <- NodeA
+    //          <- NodeB
+    //          <- NodeC
     var NodeBase = function() {
         this.children = [];
         this.view = null;
@@ -91,6 +95,7 @@ $(window).load(function() {
         if (nodeBase.isValidChild(nodeDragged)) {
             var n = $(this);
 
+            // Insert nodeDragged into the Node tree/array
             nodeBase.addChild(nodeDragged);
             n.data('node', nodeDragged);
             nodeDragged.view = n;
@@ -100,7 +105,7 @@ $(window).load(function() {
             n.addClass('setNode');
             n.addClass('type_a');
 
-            // Append another "blank" A Node
+            // Append another "blank" A Node column
             var tag = ['<div class="elementList nodeCol roundedBox dropzone">',
                 '<div class="node unsetNode nodeText roundedBox nodeBase noHandlers">A</div>',
                 '</div>'];
@@ -110,7 +115,7 @@ $(window).load(function() {
             // Unbind Events
             n.unbind('dragenter dragleave dragover drop');
 
-            // Append the "blank" dropzones to this new node
+            // Append the "blank" dropzones of nodeDragged's potential children
             nodeDragged.appendChildHtml(n);
 
             setupHandlers();
@@ -142,6 +147,7 @@ $(window).load(function() {
         return true;
     };
 
+    // TODO: force is unimplemented
     NodeBase.prototype.addChild = function(child, index, force) {
         var children = this.children;
         if (!this.isValidChild(child)) { return false; }
@@ -208,11 +214,12 @@ $(window).load(function() {
         if (NodeA.isValidChild(nodeDragged)) {
             var n = $(this);
 
+            // Insert nodeDragged into the Node tree/array
             var index = n.parents('div.type_a:first').children('div.node').index(n);
             n.parents('div.type_a:first').data('node').addChild(nodeDragged, index);
             n.data('node', nodeDragged);
             
-            // Ensure the View looks correct
+            // Setup CSS
             n.removeClass('unsetNode');
             n.addClass('setNode');
 
@@ -223,6 +230,7 @@ $(window).load(function() {
 
             n.unbind('dragenter dragleave dragover drop');
 
+            // Create the dropzones for nodeDragged's potential children
             nodeDragged.appendChildHtml(n);
             setupHandlers();
         }
@@ -258,6 +266,7 @@ $(window).load(function() {
     }
     NodeA.prototype.isValidChild = NodeA.isValidChild;
 
+    // TODO: force is unimplemented
     NodeA.prototype.addChild = function(child, index, force) {
         if(!this.isValidChild(child)) { return false; }
 
@@ -332,11 +341,12 @@ $(window).load(function() {
     NodeB.drop = function(e) {
         e.stopPropagation();
         if (NodeB.isValidChild(nodeDragged)) {
-            // Ensure the View looks correct
+            // add nodeDragged into the tree/array
             var n = $(this);
             n.parents("div.type_b:first").data('node').addChild(nodeDragged);
             n.data('node', nodeDragged);
 
+            // Setup the css
             n.removeClass('unsetNode');
             n.addClass('setNode');
 
@@ -347,6 +357,7 @@ $(window).load(function() {
 
             n.unbind('dragenter dragleave dragover drop');
 
+            // Create some more Dom elements
             nodeDragged.appendChildHtml(n);
             n.parent().append(NodeB.childHtml);
             setupHandlers();
@@ -397,6 +408,7 @@ $(window).load(function() {
     };
     NodeB.prototype.isValidChild = NodeB.isValidChild;
 
+    // TODO: force is unimplemented
     NodeB.prototype.addChild = function(child, index, force) {
         if(!this.isValidChild(child)) { return false; }
 
@@ -468,5 +480,7 @@ $(window).load(function() {
             .bind('drop',       NodeB.drop)
             .removeClass('noHandlers');
     };
+
+    // Setup the initial dropzone
     setupHandlers();
 });
